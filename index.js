@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 let db = require("./models/db");
 const organizationroute = require("./controller/organizations");
 const loginroute = require("./controller/login");
+const employeeroute = require("./controller/employee");
 
 
 require("dotenv").config();
@@ -18,7 +19,7 @@ db.sequelize
     console.error(
       `db connected to  ${ process?.env?.SERVERHOST || "NA" } database "${process?.env?.DBNAME || "NA"}"`
       )
-     db.sequelize.sync({ force:true});
+    // db.sequelize.sync({ force:true});
     })
   .catch((err) => {
     console.error(
@@ -32,6 +33,7 @@ app.get("/", (req, res)=> {
 });
 app.use("/org", organizationroute)
 app.use("/org", loginroute)
+app.use("/org",employeeroute)
 
 app.listen(6001, ()=> {
         console.log("server running at port 6001"); 

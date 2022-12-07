@@ -42,8 +42,21 @@ db.permissions.hasMany(db.employee,
     foreignKey:'permissionId',
     targetkey:'id'
   });
+  db.employee.belongsTo(db.permissions)
   db.Organization.hasMany(db.permissions,{
     foreignKey:'orgId',
+    targetkey:'id'
+  });
+  db.employee.hasMany(db.Address,{
+     foreignKey:'empId',
+     targetkey:'id'
+  });
+  db.Organization.hasMany(db.Metting,{
+    foreignKey:'orgId',
+    targetkey:'id'
+  });
+  db.employee.hasMany(db.Metting,{
+    foreignKey:'hostId',
     targetkey:'id'
   });
 

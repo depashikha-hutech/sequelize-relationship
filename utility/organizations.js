@@ -58,32 +58,6 @@ async function crtpermission(permissiondetails){
          }
     }
 }
- async function crtEmp(empDetails){
-     try{
-         const employeeinfo = await db.employee.create(empDetails)
-         if(empDetails){
-            return {
-                sucess: true,
-                statuscode:200,
-                message:"emp added sucessfully",
-                emp:employeeinfo.get(),
-            };
-        } else{
-            return{
-            sucess: true,
-            statuscode:500,
-            message:"emp failed to signup",
-        };
-    }
-     } catch (error){
-        console.log(error);
-         return{
-            sucess:false,
-            statuscode:500,
-            message:"invalid emp",
-            error:error.message,
-         }
-     }
-    }
-module.exports ={addorganization, crtEmp, crtpermission}
+ 
+module.exports ={addorganization,  crtpermission}
 
