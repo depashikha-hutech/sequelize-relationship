@@ -8,7 +8,7 @@ const {createJWTToken} =require("../utility/auth");
 async function loginemp(email, password) {
     try{
          const userdetailsExist = await employee.findOne({ where:{ email, password },include:[{model:db.permissions, attributes:["id","name","permissions","orgId"]}]});
-         console.log(userdetailsExist);
+      //   console.log(userdetailsExist);
          const userDetails = userdetailsExist
          if (userDetails?.id) {
           const token =  await createJWTToken( userdetailsExist?.id, userdetailsExist?.email, userdetailsExist?.permission )

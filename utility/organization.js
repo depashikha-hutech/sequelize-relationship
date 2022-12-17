@@ -30,16 +30,44 @@ async function addorganization(orgDetails){
     }
 }
 
+async function crtEmp(empData){
+    try{
+        const empinfo = await db.employee.create(empData)
+        if(empData){
+            return {
+                sucess: true,
+                statuscode:200,
+                message:"org created sucessfully",
+                emps:empinfo.get(),
+            };
+        } else{
+            return{       
+             sucess: true,
+            statuscode:500,
+            message:"failed to register",
+        };
+    }
+    } catch (error){
+        console.log(error);
+         return{
+            sucess:false,
+            statuscode:500,
+            message:"invalid org",
+            error:error.message,
+         }
+    }
+}
 
 async function crtpermission(permissiondetails){
     try{
         const permissioninfo = await db.permissions.create(permissiondetails)
+       // console.log({permissioninfo});
         if(permissiondetails){
             return {
                 sucess: true,
                 statuscode:200,
                 message:"get permission sucesspermissiondetailsfully",
-                permission:permissioninfo.get(),
+                permissions:permissioninfo.get(),
             };
         } else{
             return{       
@@ -59,5 +87,5 @@ async function crtpermission(permissiondetails){
     }
 }
  
-module.exports ={addorganization,  crtpermission}
-
+module.exports ={addorganization, crtEmp,  crtpermission}
+ 

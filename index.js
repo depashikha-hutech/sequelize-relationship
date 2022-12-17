@@ -5,7 +5,7 @@ let db = require("./models/db");
 const organizationroute = require("./controller/organizations");
 const loginroute = require("./controller/login");
 const employeeroute = require("./controller/employee");
-
+const permissionroute = require("./controller/permission");
 
 require("dotenv").config();
 const cors = require("cors");
@@ -19,7 +19,7 @@ db.sequelize
     console.error(
       `db connected to  ${ process?.env?.SERVERHOST || "NA" } database "${process?.env?.DBNAME || "NA"}"`
       )
-    // db.sequelize.sync({ force:true});
+    db.sequelize.sync({ force:true});
     })
   .catch((err) => {
     console.error(
@@ -30,11 +30,12 @@ db.sequelize
 
 app.get("/", (req, res)=> {
     res.send("welcome to express server");
+    
 });
 app.use("/org", organizationroute)
 app.use("/org", loginroute)
 app.use("/org",employeeroute)
-
+app.use("/org",permissionroute)
 app.listen(6001, ()=> {
         console.log("server running at port 6001"); 
 });
