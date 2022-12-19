@@ -1,43 +1,40 @@
 const express = require('express');
+const { addorganization, crtEmp, crtpermission } = require("../utility/organization");
 const route = express.Router();
-const {addorganization,crtEmp, crtpermission} = require("../utility/organization");
-route.get("/", (req, res)=> {
-    res.send("welcome to express server ");
-});
-route.post('/signup', async(req,res)=>{
-   try{
-    const{ orgDetails, empData} = req.body;
-   // console.log(req.body);
-    if( orgDetails && empData){
-    const crtorg = await addorganization(orgDetails);
-   // console.log(crtorg);
-    if(crtorg?.sucess){
-        const permissioncreate = await crtpermission({orgId:crtorg?.orgs?.id, name:"Admin", permissions:{all:true}});
-       // console.log({permissioncreate});
-        if(permissioncreate?.sucess){
-        //console.log({permissioncreate});
-            const empcrt = await crtEmp({orgId:crtorg?.orgs?.id, permissionId:permissioncreate?.permissions?.id,...empData});
-            console.log(empcrt);
-            if(empcrt?.sucess){
-                res.status(empcrt?.statuscode).json(empcrt);
-            }
 
-    else{
-        res.status(500).json("organisation created but failed to create user")
-    }
- } else{
-    res.status(500).json("owner not get the permission");
-
-    }
-    } else{
-        res.status(crtorg?.statuscode).json(crtorg);
-    }
-    }
-} catch (error) {
-    console.log(error);
-    res.status(500).json({sucess: false, message:"internal server error"});
-}
+//post 
+route.post("/signup", async (req, res) => {
+  try { 
+     const { orgDetails, empData } = req.body;
+    if(orgDetails && empData){
+         const crtOrg = await addorganization(orgDetails);
+         if(crtOrg?.sucess){
+            const permissionCrt = await crtpermission({orgId:crtOrg?.orgs.id, name:"Admin", permissions:{All:true} });
+            console.log(permissionCrt);
+            if(permissionCrt?.sucess){
+               const empCrt = await crtEmp({orgId:crtOrg?.orgs?.id, permissionId:permissionCrt?.permissions?.id,...empData});
+               if(empCrt?.sucess){
+                   //success
+                    res.status(empCrt?.statusCode).json(empCrt);
+               }else{
+                   res.status(500).json("org created but failed to create user")
+               }
+             }
+             else {
+                 res.status(500).json("owner didn't get the access");
+             }
+         }
+         else{
+             res.status(crtOrg?.statusCode).json(crtOrg);
+        }
+    } 
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "internal server error",
+      error: error.message,
+    });
+  }
 });
 
 module.exports = route;
-

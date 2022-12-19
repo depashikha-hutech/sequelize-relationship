@@ -1,5 +1,6 @@
 const db = require("../models/db");
 require("dotenv").config();
+//const permission = require("../models/permission");
 const env = process?.env
 
 async function addorganization(orgDetails){
@@ -8,14 +9,14 @@ async function addorganization(orgDetails){
         if(orgDetails){
             return {
                 sucess: true,
-                statuscode:200,
+                statusCode:200,
                 message:"org created sucessfully",
                 orgs:organizationsinfo.get(),
             };
         } else{
             return{       
              sucess: true,
-            statuscode:500,
+            statusCode:500,
             message:"failed to register",
         };
     }
@@ -23,7 +24,7 @@ async function addorganization(orgDetails){
         console.log(error);
          return{
             sucess:false,
-            statuscode:500,
+            statusCode:500,
             message:"invalid org",
             error:error.message,
          }
@@ -36,14 +37,14 @@ async function crtEmp(empData){
         if(empData){
             return {
                 sucess: true,
-                statuscode:200,
+                statusCode:200,
                 message:"org created sucessfully",
                 emps:empinfo.get(),
             };
         } else{
             return{       
              sucess: true,
-            statuscode:500,
+            statusCode:500,
             message:"failed to register",
         };
     }
@@ -51,7 +52,7 @@ async function crtEmp(empData){
         console.log(error);
          return{
             sucess:false,
-            statuscode:500,
+            statusCode:500,
             message:"invalid org",
             error:error.message,
          }
@@ -61,18 +62,18 @@ async function crtEmp(empData){
 async function crtpermission(permissiondetails){
     try{
         const permissioninfo = await db.permissions.create(permissiondetails)
-       // console.log({permissioninfo});
+        console.log({permissioninfo});
         if(permissiondetails){
             return {
                 sucess: true,
-                statuscode:200,
+                statusCode:200,
                 message:"get permission sucesspermissiondetailsfully",
                 permissions:permissioninfo.get(),
             };
         } else{
             return{       
              sucess: true,
-            statuscode:500,
+            statusCode:500,
             message:"permission not allowed",
         };
     }
@@ -80,7 +81,7 @@ async function crtpermission(permissiondetails){
         console.log(error);
          return{
             sucess:false,
-            statuscode:500,
+            statusCode:500,
             message:" false permission ",
             error:error.message,
          }

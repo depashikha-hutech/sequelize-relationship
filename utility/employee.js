@@ -1,9 +1,13 @@
 const db = require("../models/db");
-const permission = require("../models/permission");
+//const permission = require("../models/permission");
 require("dotenv").config();
+const env = process?.env
+
+
 async function addEmployee(user){
     try{
         const employeeinfo = await db.employee.create(user)
+        console.log({employeeinfo});
         if(user){
            return {
                sucess: true,
@@ -19,6 +23,7 @@ async function addEmployee(user){
        };
    }
     } catch (error){
+        console.log(error);
         return{
            sucess:false,
            statusCode:500,
@@ -29,7 +34,7 @@ async function addEmployee(user){
    }
    async function getEmployee(id = null) {
     try{
-        const usersdetails = await db.employee.findAll({where: id ? { id } : {} });
+        const usersdetails = await db.employee.findAll({where: id ? { id } : {},  });
         if (usersdetails.length > 0){
      return {
         sucess:true,
@@ -49,29 +54,7 @@ async function addEmployee(user){
        return({ sucess:false, statusCode: 400, message:"user not found", error: error.message });
     }
     }
-    //create role
-    async function createRole(user){
-    try{
-        const roleinfo = await db.permissions.create(user)
-        if(user){
-           return {
-               sucess: true,
-               statusCode:200,
-               message:"role created sucessfully",
-               emp:roleinfo.get(),
-           };
-       } else{
-           return{
-           sucess: false,
-           statusCode:500,
-           message:"failed to update the role",
-       }
-    };
-    } catch (error) {
-        console.log(error);
-           return({ sucess:false, statusCode: 400, message:"user not found", error: error.message });
-        }
-        }
+    
         //update emp
         async function updateemployee(id, user){
             try{
@@ -116,4 +99,4 @@ async function deletedemp(id){
         return({ sucess:false, statusCode: 400, message:"user not found", error:error.message});
     }
     }
-    module.exports = {addEmployee, getEmployee,createRole,updateemployee,deletedemp,}
+    module.exports = {addEmployee, getEmployee,updateemployee,deletedemp}

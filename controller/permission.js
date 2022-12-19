@@ -3,12 +3,9 @@ const route = express.Router();
 const { createRole,updatepermission, getPermission, deletepermission} = require("../utility/permission");
 const { authorizeUser } = require("../utility/auth");
 
-route.get("/", (req, res)=> {
-    res.send("welcome to express server ");
-});
 
 //create role
-route.post('/role', authorizeUser, async(req, res) => {
+route.post('/', authorizeUser, async(req, res) => {
     try {
         const rolecrt = await createRole({...req?.body, orgId:req?.user?.orgId});
         res.status(rolecrt?.statusCode).json(rolecrt);
@@ -18,7 +15,7 @@ route.post('/role', authorizeUser, async(req, res) => {
 }
 });
 //update permission
-route.put("/role/:id", authorizeUser, async (req, res) => {
+route.put("/:id", authorizeUser, async (req, res) => {
     try{
        const roledisplay= await updatepermission(req?.params?.id, {...req?.body, orgId:req?.user?.orgId });
        console.log(roledisplay);
@@ -29,7 +26,7 @@ route.put("/role/:id", authorizeUser, async (req, res) => {
     }
 });
 //get permission by id
-route.get("/role/:id",authorizeUser, async (req, res)=> {
+route.get("/:id",authorizeUser, async (req, res)=> {
     try {
         const permissiondetails = await  getPermission(req?.params?.id);
       //  console.log(permissiondetails);
@@ -39,7 +36,7 @@ route.get("/role/:id",authorizeUser, async (req, res)=> {
     }
 });
 //delete permission 
-route.delete("/role/:id", authorizeUser, async (req, res) => {
+route.delete("/:id", authorizeUser, async (req, res) => {
     try{
         const deleterole = await deletepermission(req?.params?.id);
         console.log(deleterole);
@@ -50,9 +47,8 @@ route.delete("/role/:id", authorizeUser, async (req, res) => {
      }
     });
     //get all permission
-    route.get("/role",authorizeUser, async (req, res)=> {
+    route.get("/",authorizeUser, async (req, res)=> {
         try {
-            console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4");
             const roledetails = await getPermission();
             console.log(roledetails);
             res.status(roledetails?.statusCode).json(roledetails);

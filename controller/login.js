@@ -7,7 +7,7 @@ route.get("/", (req, res)=> {
 });
 route.post("/login", async (req, res) =>{
     try{
-        const userExist = await loginemp(req.body.email,  req.body.password); 
+        const userExist = await loginemp(req?.body?.email,  req?.body?.password); 
        // console.log({userExist });
         res.status(userExist?.statusCode).json(userExist);
     } catch (error){

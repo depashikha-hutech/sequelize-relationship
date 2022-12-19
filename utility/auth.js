@@ -1,12 +1,12 @@
  const db = require("../models/db");
  const employee = require("../models/employee");
  const jwt = require("jsonwebtoken");
-const { permissions } = require("../models/db");
+
 
  async function createJWTToken(id, email,permission) {
 
      const token = jwt.sign({user:{ id, email,permission}} , process.env.ACCESS_TOKEN_SECRET, { expiresIn: "9h" });
-    // console.log(token);
+     console.log(token);
      return { idToken: token, refreshToken: "na" };
    }
    async function authorizeUser(req, res, next) {
@@ -32,7 +32,7 @@ const { permissions } = require("../models/db");
           case '/employee':
 
             if(Method==='POST'){
-            //  console.log(permissionsinfo?.all || permissionsinfo?.EMP_CRT); 
+              console.log(permissionsinfo?.all || permissionsinfo?.EMP_CRT); 
               if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
               hasPermissions=true
             }
@@ -55,7 +55,32 @@ const { permissions } = require("../models/db");
             if(Method==='POST'){
              console.log("yyyyyyyyy");
 
-              if(permissionsinfo?.all || permdetails?.EMP_CRT)
+              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
+              hasPermissions=true
+            }
+            else  if(Method==='GET'){
+              console.log("kkkkkk");
+              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT )
+              hasPermissions=true
+            }
+            else if(Method==='PUT'){
+              console.log("mmmmmmmm");
+              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
+              hasPermissions=true
+            }
+            else if(Method==='DELETE'){
+              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
+              console.log(permissionsinfo?.all || permissionsinfo?.EMP_CRT);
+              hasPermissions=true
+            }
+            break;
+            //meet
+            case '/meet':
+              console.log("lololoos");
+            if(Method==='POST'){
+             console.log("yyyyyyyyy");
+
+              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
               hasPermissions=true
             }
             else  if(Method==='GET'){
