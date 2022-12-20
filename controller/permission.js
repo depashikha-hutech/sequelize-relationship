@@ -18,7 +18,6 @@ route.post('/', authorizeUser, async(req, res) => {
 route.put("/:id", authorizeUser, async (req, res) => {
     try{
        const roledisplay= await updatepermission(req?.params?.id, {...req?.body, orgId:req?.user?.orgId });
-       console.log(roledisplay);
        res.status(roledisplay?.statusCode).json(roledisplay);
     }catch (error) {
         console.log(error);
@@ -29,7 +28,6 @@ route.put("/:id", authorizeUser, async (req, res) => {
 route.get("/:id",authorizeUser, async (req, res)=> {
     try {
         const permissiondetails = await  getPermission(req?.params?.id);
-      //  console.log(permissiondetails);
         res.status(permissiondetails?.statusCode).json(permissiondetails);
     }catch (error) {
         res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
@@ -39,7 +37,6 @@ route.get("/:id",authorizeUser, async (req, res)=> {
 route.delete("/:id", authorizeUser, async (req, res) => {
     try{
         const deleterole = await deletepermission(req?.params?.id);
-        console.log(deleterole);
         res.status(deleterole?.statusCode).json(deleterole);
      }catch (error) {
          console.log(error);
@@ -50,7 +47,6 @@ route.delete("/:id", authorizeUser, async (req, res) => {
     route.get("/",authorizeUser, async (req, res)=> {
         try {
             const roledetails = await getPermission();
-            console.log(roledetails);
             res.status(roledetails?.statusCode).json(roledetails);
         }catch (error) {
             console.log(error);

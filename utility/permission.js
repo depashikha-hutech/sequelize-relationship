@@ -29,7 +29,6 @@ require("dotenv").config();
     async function updatepermission(id, permission){
         try{
             const updatepermissioninfo = await db.permissions.update(permission, {where:{id}});
-            console.log(updatepermissioninfo);
             if(permission){
                return {
                    sucess: true,
@@ -53,7 +52,6 @@ require("dotenv").config();
    async function getPermission(id = null) {
     try{
         const approval = await db.permissions.findAll({where: id ? { id } : {} });
-        console.log({approval});
         if (approval.length > 0){
      return {
         sucess:true,
@@ -77,7 +75,7 @@ require("dotenv").config();
     async function deletepermission(id){
         try{
             const deleterole =await db.permissions.destroy({ where: { id}});
-            if(permission){
+            if(deleterole){
                 return {
                     sucess: true,
                     statusCode:200,
@@ -87,12 +85,12 @@ require("dotenv").config();
                 return{
                 sucess: false,
                 statusCode:500,
-                message:"failed to delete the role",
+                message:"role not found",
             }
          };
         } catch (error) {
             console.log(error);
-            return({ sucess:false, statusCode: 400, message:"role not found", error:error.message});
+            return({ sucess:false, statusCode: 400, message:"failed to delete the role", error:error.message});
         }
         }
     module.exports = {createRole,updatepermission,getPermission,deletepermission}

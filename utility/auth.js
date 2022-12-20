@@ -6,7 +6,6 @@
  async function createJWTToken(id, email,permission) {
 
      const token = jwt.sign({user:{ id, email,permission}} , process.env.ACCESS_TOKEN_SECRET, { expiresIn: "9h" });
-     console.log(token);
      return { idToken: token, refreshToken: "na" };
    }
    async function authorizeUser(req, res, next) {
@@ -23,11 +22,8 @@
        if (err) { 
         res.sendStatus(401);
        } else {
-        //console.log(user?.user?.permission?.permissions);
         const permissionsinfo=user?.user?.permission?.permissions;
         let hasPermissions=false;
-        console.log({Method});
-        console.log({Endpoint});
         switch (Endpoint) {
           case '/employee':
 
@@ -51,51 +47,57 @@
             //}
             break;    
             case '/role':
-              console.log("lololoos");
             if(Method==='POST'){
-             console.log("yyyyyyyyy");
-
-              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
+              if(permissionsinfo?.all || permissionsinfo?.PERMISSION_CRT)
               hasPermissions=true
             }
             else  if(Method==='GET'){
-              console.log("kkkkkk");
-              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT )
+              if(permissionsinfo?.all || permissionsinfo?.PERMISSION_CRT )
               hasPermissions=true
             }
             else if(Method==='PUT'){
-              console.log("mmmmmmmm");
-              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
+              if(permissionsinfo?.all || permissionsinfo?.PERMISSION_CRT)
               hasPermissions=true
             }
             else if(Method==='DELETE'){
-              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
-              console.log(permissionsinfo?.all || permissionsinfo?.EMP_CRT);
+              if(permissionsinfo?.all || permissionsinfo?.PERMISSION_CRT)
               hasPermissions=true
             }
             break;
             //meet
             case '/meet':
-              console.log("lololoos");
             if(Method==='POST'){
-             console.log("yyyyyyyyy");
-
-              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
+              if(permissionsinfo?.all || permissionsinfo?.MEET_CRT)
               hasPermissions=true
             }
             else  if(Method==='GET'){
-              console.log("kkkkkk");
-              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT )
+              if(permissionsinfo?.all || permissionsinfo?.MEET_CRT )
               hasPermissions=true
             }
             else if(Method==='PUT'){
-              console.log("mmmmmmmm");
-              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
+              if(permissionsinfo?.all || permissionsinfo?.MEET_CRT)
               hasPermissions=true
             }
             else if(Method==='DELETE'){
-              if(permissionsinfo?.all || permissionsinfo?.EMP_CRT)
-              console.log(permissionsinfo?.all || permissionsinfo?.EMP_CRT);
+              if(permissionsinfo?.all || permissionsinfo?.MEET_CRT)
+              hasPermissions=true
+            }
+            break;
+            case '/address':
+            if(Method==='POST'){
+              if(permissionsinfo?.all || permissionsinfo?.ADDRESS_CRT)
+              hasPermissions=true
+            }
+            else  if(Method==='GET'){
+              if(permissionsinfo?.all || permissionsinfo?.ADDRESS_CRT )
+              hasPermissions=true
+            }
+            else if(Method==='PUT'){
+              if(permissionsinfo?.all || permissionsinfo?.ADDRESS_CRT)
+              hasPermissions=true
+            }
+            else if(Method==='DELETE'){
+              if(permissionsinfo?.all || permissionsinfo?.ADDRESS_CRT)
               hasPermissions=true
             }
             break;
@@ -108,8 +110,8 @@
 
 
         if(hasPermissions){
-       req.user = {...user?.user,orgId:user?.user?.permission?.orgId}
-         next();
+       req.user = {...user?.user,orgId:user?.user?.permission?.orgId, empId:user?.user?.id} 
+       next();
         }else{
           res.sendStatus(401);
         }

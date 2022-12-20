@@ -82,7 +82,7 @@ async function addEmployee(user){
 async function deletedemp(id){
     try{
         const delUser =await db.employee.destroy({ where: { id}});
-        if(user){
+        if(delUser){
             return {
                 sucess: true,
                 statusCode:200,

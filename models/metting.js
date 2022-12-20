@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize)=> {
             },
             title: DataTypes.STRING,
             inviteTO: DataTypes.ARRAY(DataTypes.STRING),
-            date:{type:DataTypes.DATE,allowNull: false},
+            date:{type:DataTypes.DATEONLY,allowNull: false},
             time:{type:DataTypes.TIME,allowNull: false},
             meetLink:{type:DataTypes.STRING,allowNull: false},
             

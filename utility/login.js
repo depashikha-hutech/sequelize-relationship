@@ -18,7 +18,6 @@ async function loginemp(email, password) {
          }
       } catch (error) {
           return({ sucess:false, statusCode: 500, message:"internal server error", error:error.message});
-  
       }
   }
 module.exports= {loginemp}
