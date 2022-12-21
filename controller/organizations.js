@@ -1,5 +1,5 @@
 const express = require('express');
-const { addorganization, crtEmp, crtpermission } = require("../utility/organization");
+const { addorganization, crtEmp, crtpermission, updateorg } = require("../utility/organization");
 const route = express.Router();
 
 //post 
@@ -36,5 +36,17 @@ route.post("/signup", async (req, res) => {
     });
   }
 });
+//
+route.put("/:id", async (req, res) => {
+  try{
+     const orgdisplay = await updateorg(req?.params?.id,req?.body);
+     console.log(orgdisplay);
+     res.status(orgdisplay?.statusCode).json(orgdisplay);
+  }catch (error) {
+      console.log(error);
+     res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
+  }
+});
+
 
 module.exports = route;

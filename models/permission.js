@@ -12,8 +12,6 @@ module.exports = (sequelize, Sequelize)=> {
             },
             name: DataTypes.STRING,
             permissions: DataTypes.JSONB,
-
-            
         },
         { tabelName :"permissions"}
     );

@@ -1,13 +1,25 @@
 const express = require('express');
 const route = express.Router();
-const { addEmployee, getEmployee,updateemployee, deletedemp} = require("../utility/employee");
+const { addEmployee, getEmployee,updateemployee, deletedemp,addaddress} = require("../utility/employee");
 const { authorizeUser } = require("../utility/auth");
 
 route.post("/", authorizeUser, async(req, res) => {
     try {
-        const crtemployee = await addEmployee({...req?.body, orgId:req?.user?.orgId});
+        const{empData,addressData}=req.body;
+        if(empData && addressData){
+        const crtemployee = await addEmployee({...empData, orgId:req?.user?.orgId});
         console.log({crtemployee});
+        if (crtemployee?.sucess){
+            const addresscrt = await addaddress({...addressData,empId:crtemployee?.emp?.id} );
+            if(addresscrt?.sucess){
+                res.status(addresscrt?.statusCode).json(addresscrt);
+            }else{
+                res.status(500).json("emp create but fail to add address ")
+            }
+        }else{
         res.status(crtemployee?.statusCode).json(crtemployee);
+        }
+    }
     } catch (error) {
     console.log(error);
     res.status(500).json({sucess: false, message:"internal server error", error: error.message});

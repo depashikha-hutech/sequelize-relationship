@@ -83,24 +83,6 @@
               hasPermissions=true
             }
             break;
-            case '/address':
-            if(Method==='POST'){
-              if(permissionsinfo?.all || permissionsinfo?.ADDRESS_CRT)
-              hasPermissions=true
-            }
-            else  if(Method==='GET'){
-              if(permissionsinfo?.all || permissionsinfo?.ADDRESS_CRT )
-              hasPermissions=true
-            }
-            else if(Method==='PUT'){
-              if(permissionsinfo?.all || permissionsinfo?.ADDRESS_CRT)
-              hasPermissions=true
-            }
-            else if(Method==='DELETE'){
-              if(permissionsinfo?.all || permissionsinfo?.ADDRESS_CRT)
-              hasPermissions=true
-            }
-            break;
               default :{
                 if(Method===req.method && Endpoint.includes("/employee/")&& Endpoint.length===46 && (permissionsinfo?.all || permissionsinfo?.EMP_CRT)){
                 }

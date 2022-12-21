@@ -87,6 +87,30 @@ async function crtpermission(permissiondetails){
          }
     }
 }
+
+        //update emp
+        async function updateorg(id){
+            try{
+                const updateinfo = await db.Organization.update({where:{id}});
+                console.log(updateinfo);
+                if(id){
+                   return {
+                       sucess: true,
+                       statusCode:200,
+                       message:"updated sucessfully",
+                   };
+               } else{
+                   return{
+                   sucess: false,
+                   statusCode:500,
+                   message:"failed to update the org",
+               }
+            };
+            } catch (error) {
+                console.log(error);
+                   return({ sucess:false, statusCode: 400, message:"org not updated", error: error.message });
+                }
+                }
  
-module.exports ={addorganization, crtEmp,  crtpermission}
+module.exports ={addorganization, crtEmp,  crtpermission,updateorg}
  

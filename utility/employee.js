@@ -4,11 +4,11 @@ require("dotenv").config();
 const env = process?.env
 
 
-async function addEmployee(user){
+async function addEmployee(empData){
     try{
-        const employeeinfo = await db.employee.create(user)
+        const employeeinfo = await db.employee.create(empData)
         console.log({employeeinfo});
-        if(user){
+        if(empData){
            return {
                sucess: true,
                statusCode:200,
@@ -99,4 +99,36 @@ async function deletedemp(id){
         return({ sucess:false, statusCode: 400, message:"user not found", error:error.message});
     }
     }
-    module.exports = {addEmployee, getEmployee,updateemployee,deletedemp}
+    //
+
+
+ async function addaddress(addressData){
+     try{
+         const addressinfo = await db.Address.create(addressData)
+         console.log({addressinfo});
+         if(addressData){
+            return {
+                sucess: true,
+                statusCode:200,
+                message:"emp added sucessfully",
+                address:addressinfo.get(),
+            };
+        } else{
+            return{
+            sucess: true,
+            statusCode:500,
+            message:" failed to add address",
+        };
+    }
+     } catch (error){
+         console.log(error);
+         return{
+            sucess:false,
+            statusCode:500,
+           message:"invalid  address",
+            error:error.message,
+         }
+     }
+   }
+
+module.exports = {addEmployee, getEmployee,updateemployee,deletedemp,addaddress}
