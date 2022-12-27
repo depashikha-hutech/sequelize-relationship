@@ -1,5 +1,5 @@
 const express = require('express');
-const { addorganization, crtEmp, crtpermission, updateorg } = require("../utility/organization");
+const { addorganization, crtEmp, crtpermission, updateorg, getAllOrgData } = require("../utility/organization");
 const route = express.Router();
 
 //post 
@@ -47,6 +47,28 @@ route.put("/:id", async (req, res) => {
      res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
   }
 });
+// get
+route.get("/", async (req, res)=> {
+  try {
+    const { offset, limit, s } = req.query;
+      const orgDetails = await  getAllOrgData( offset, limit, s);
+      console.log({orgDetails});
+      res.status(orgDetails?.statusCode).json(orgDetails);
+  }catch (error) {
+    console.log(error);
+      res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
+  }
+});
 
+// get  by id
+route.get("/:id", async (req, res)=> {
+  try {
+      const orgDetails = await  getAllOrgData(req?.params?.id);
+      console.log(orgDetails);
+      res.status(orgDetails?.statusCode).json(orgDetails);
+  }catch (error) {
+      res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
+  }
+});
 
 module.exports = route;

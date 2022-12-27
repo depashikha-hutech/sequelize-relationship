@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models/db");
 require("dotenv").config();
 //const permission = require("../models/permission");
@@ -89,11 +90,12 @@ async function crtpermission(permissiondetails){
 }
 
         //update emp
-        async function updateorg(id){
+        async function updateorg(id, orgDetails){
+            console.log(id, orgDetails);
             try{
-                const updateinfo = await db.Organization.update({where:{id}});
+                const updateinfo = await db.Organization.update(orgDetails?.orgDetails, {where:{id} ,returning : true});
                 console.log(updateinfo);
-                if(id){
+                if(orgDetails){
                    return {
                        sucess: true,
                        statusCode:200,
@@ -111,6 +113,38 @@ async function crtpermission(permissiondetails){
                    return({ sucess:false, statusCode: 400, message:"org not updated", error: error.message });
                 }
                 }
- 
-module.exports ={addorganization, crtEmp,  crtpermission,updateorg}
- 
+
+    
+    async function getAllOrgData(offset, limit, s, id = null) {
+        try {
+          const getOrganisationDetails = await db.Organization.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
+          [Op.iLike]:`%${s}%`,
+           }}, {city: {
+           [Op.iLike]:`%${s}`,
+          }}, {state:{
+           [Op.iLike]: `%${s}`
+        }}] },  offset, limit, });
+          console.log(getOrganisationDetails);
+          if(getOrganisationDetails.count > 0 ){
+            return {
+               sucess: true,
+               statusCode: 200,
+               message: "organisation details",
+               totalCount: getOrganisationDetails?.count,
+               org: getOrganisationDetails?.rows,
+            }
+          } else {
+            return {
+                sucess: true,
+                statusCode: 500,
+            message: " organisation details not found",
+        
+            }
+        }
+        
+        } catch (error) {
+           console.log(error);
+              return({ sucess:false, statusCode: 500, message:"organisation not found", error: error.message });
+        }
+}          
+module.exports ={addorganization, crtEmp,  crtpermission,updateorg,getAllOrgData}

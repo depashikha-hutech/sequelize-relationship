@@ -31,6 +31,7 @@ const db = {
   Address: require("../models/address")(sequelize,Sequelize),
   Metting: require("../models/metting")(sequelize,Sequelize),
   permissions: require("../models/permission")(sequelize,Sequelize),
+  Media: require("../models/media")(sequelize,Sequelize),
 
 };
 db.Organization .hasMany(db.employee,{ 

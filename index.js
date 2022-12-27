@@ -7,10 +7,12 @@ const loginroute = require("./controller/login");
 const employeeroute = require("./controller/employee");
 const permissionroute = require("./controller/permission");
 const meetingroute = require("./controller/metting");
+const mediaroute = require ("./controller/media");
 require("dotenv").config();
 const cors = require("cors");
+const fileUpload = require('express-fileupload');
 const port = process?.env?.port || 6001;
-
+app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(cors());
 db.sequelize
@@ -19,7 +21,7 @@ db.sequelize
     console.error(
       `db connected to  ${ process?.env?.SERVERHOST || "NA" } database "${process?.env?.DBNAME || "NA"}"`
       )
-    db.sequelize.sync({ force:true});
+  // db.sequelize.sync({ alter:true});
     })
   .catch((err) => {
     console.error(
@@ -28,15 +30,14 @@ db.sequelize
     );
     });
 
-app.get("/", (req, res)=> {
-    res.send("welcome to express server");
-    
-});
-app.use("/org", organizationroute)
+
+app.use("/api/v1/org", organizationroute)
 app.use("/org", loginroute)
-app.use("/org/employee",employeeroute)
-app.use("/org/role",permissionroute)
-app.use("/org/meet",meetingroute)
+app.use("/api/v1/employee",employeeroute)
+app.use("/api/v1/role",permissionroute)
+app.use("/api/v1/meet",meetingroute)
+app.use("/api/v1/media",mediaroute)
+
 app.listen(6001, ()=> {
         console.log("server running at port 6001"); 
 });
