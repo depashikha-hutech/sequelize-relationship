@@ -36,9 +36,12 @@ route.get("/:id", async (req, res)=> {
 //get all employee
 route.get("/",authorizeUser, async (req, res)=> {
     try {
-        const employeedetails = await getEmployee();
+        const { offset, limit, e } = req.query;
+
+        const employeedetails = await getEmployee(offset, limit, e);
         console.log(employeedetails);
         res.status(employeedetails?.statusCode).json(employeedetails);
+    
     }catch (error) {
         console.log(error);
         res.status(500).json({ sucess: false, message: "internal server error", error: error.message});

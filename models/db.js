@@ -36,7 +36,8 @@ const db = {
 };
 db.Organization .hasMany(db.employee,{ 
     foreignKey:'orgId',
-    targetkey:'id'
+    targetkey:'id',
+    onDelete: 'CASCADE' 
 });
 db.permissions.hasMany(db.employee,
   {

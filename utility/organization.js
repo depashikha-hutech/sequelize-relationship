@@ -146,5 +146,28 @@ async function crtpermission(permissiondetails){
            console.log(error);
               return({ sucess:false, statusCode: 500, message:"organisation not found", error: error.message });
         }
-}          
-module.exports ={addorganization, crtEmp,  crtpermission,updateorg,getAllOrgData}
+}   
+
+async function deletedorg(id){
+    try{
+        const delorg =await db.Organization.destroy({ where: { id}});
+        if(delorg){
+            return {
+                sucess: true,
+                statusCode:200,
+                message:"deleted sucessfully",
+            };
+        } else{
+            return{
+            sucess: false,
+            statusCode:500,
+            message:"failed to delete the org",
+        }
+     };
+    } catch (error) {
+        return({ sucess:false, statusCode: 400, message:"org not found", error:error.message});
+    }
+    }
+    //
+
+module.exports ={addorganization, crtEmp,  crtpermission,updateorg,getAllOrgData,deletedorg}

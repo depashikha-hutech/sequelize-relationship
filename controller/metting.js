@@ -4,10 +4,6 @@ const route = express.Router();
 
 const { authorizeUser } = require("../utility/auth");
 
-route.post("/a",(req,res)=>{
-    res.send("PLPLP")
-})
-
 route.post("/", authorizeUser, async(req, res) => {
     try {
         const createmeet = await Createmeet({...req?.body,hostId:req?.user?.empId, orgId:req?.user?.orgId});
@@ -27,7 +23,7 @@ route.put("/:id", authorizeUser, async (req, res) => {
        res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
     }
 });
-///get meeting by id
+//get meeting by id
 route.get("/:id",authorizeUser, async (req, res)=> {
     try {
         const meetingdetails = await  getmeeting(req?.params?.id);

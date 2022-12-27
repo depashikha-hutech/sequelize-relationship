@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models/db");
 //const permission = require("../models/permission");
 require("dotenv").config();
@@ -8,7 +9,7 @@ async function addEmployee(empData){
     try{
         const employeeinfo = await db.employee.create(empData)
         console.log({employeeinfo});
-        if(empData){
+        if(employeeinfo){
            return {
                sucess: true,
                statusCode:200,
@@ -32,28 +33,36 @@ async function addEmployee(empData){
         }
     }
    }
-   async function getEmployee(id = null) {
-    try{
-        const usersdetails = await db.employee.findAll({where: id ? { id } : {},  });
-        if (usersdetails.length > 0){
-     return {
-        sucess:true,
-        statusCode: 200,
-        message:"user created sucessfully",
-        emp:id ? usersdetails[0] : usersdetails,
-        };
-    }else{
-        return {
-            sucess: true,
-            statusCode:500,
-            message:"user not created",
+    async function getEmployee(offset, limit, e, id = null) {
+        try {
+          const getempdetails = await db.employee.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
+          [Op.iLike]:`%${e}%`,
+           }}, {state: {
+           [Op.iLike]: `%${e}%`
+        }}] },  offset, limit, });
+          console.log(getempdetails);
+          if(getempdetails.count > 0 ){
+            return {
+               sucess: true,
+               statusCode: 200,
+               message: "emp details",
+               totalCount: getempdetails?.count,
+               emp: getempdetails?.rows,
+            }
+          } else {
+            return {
+                sucess: true,
+                statusCode: 500,
+            message: " emp details not found",
+        
+            }
         }
-    };
-   } catch (error) {
-    console.log(error);
-       return({ sucess:false, statusCode: 400, message:"user not found", error: error.message });
-    }
-    }
+        
+        } catch (error) {
+           console.log(error);
+              return({ sucess:false, statusCode: 500, message:"emp not found", error: error.message });
+        }
+    }   
     
         //update emp
         async function updateemployee(id, user){
