@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+const { permissions } = require("../models/db");
 const db = require("../models/db");
 require("dotenv").config();
 //const permission = require("../models/permission");
@@ -115,7 +116,7 @@ async function crtpermission(permissiondetails){
                 }
 
     
-    async function getAllOrgData(offset, limit, s, id = null) {
+    async function getAllOrgData(id = null,offset, limit, s,) {
         try {
           const getOrganisationDetails = await db.Organization.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
           [Op.iLike]:`%${s}%`,
@@ -123,8 +124,8 @@ async function crtpermission(permissiondetails){
            [Op.iLike]:`%${s}`,
           }}, {state:{
            [Op.iLike]: `%${s}`
-        }}] },  offset, limit, });
-          console.log(getOrganisationDetails);
+        }}] },include:[{model:permissions}],  offset, limit, });
+         // console.log(getOrganisationDetails);
           if(getOrganisationDetails.count > 0 ){
             return {
                sucess: true,

@@ -4,7 +4,7 @@ require("dotenv").config();
 const env = process?.env
 
 // get address
-async function getaddress(offset, limit, w, id = null) {
+async function getaddress(id = null,offset, limit, w, ) {
     try {
       const getaddressdetails = await db.Address.findAndCountAll({ where : id ? {id} :{[Op.or]:[{state :{
       [Op.iLike]:`%${w}%`,

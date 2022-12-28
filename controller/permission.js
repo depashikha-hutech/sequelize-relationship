@@ -27,7 +27,8 @@ route.put("/:id", authorizeUser, async (req, res) => {
 //get permission by id
 route.get("/:id",authorizeUser, async (req, res)=> {
     try {
-        const permissiondetails = await  getPermission(req?.params?.id);
+        const {offset=0, limit=null,p=null } = req.query
+        const permissiondetails = await  getPermission( offset,limit,p,req?.params?.id);
         res.status(permissiondetails?.statusCode).json(permissiondetails);
     }catch (error) {
         res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
@@ -46,7 +47,8 @@ route.delete("/:id", authorizeUser, async (req, res) => {
     //get all permission
     route.get("/",authorizeUser, async (req, res)=> {
         try {
-            const roledetails = await getPermission();
+        const {offset=0, limit=null,p } = req.query
+            const roledetails = await getPermission(offset,limit,p);
             res.status(roledetails?.statusCode).json(roledetails);
         }catch (error) {
             console.log(error);

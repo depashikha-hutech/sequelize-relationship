@@ -2,6 +2,7 @@ const express = require('express');
 const route = express.Router();
 const { addEmployee, getEmployee,updateemployee, deletedemp,addaddress} = require("../utility/employee");
 const { authorizeUser } = require("../utility/auth");
+const permission = require('../models/permission');
 
 route.post("/", authorizeUser, async(req, res) => {
     try {
@@ -25,19 +26,22 @@ route.post("/", authorizeUser, async(req, res) => {
     res.status(500).json({sucess: false, message:"internal server error", error: error.message});
 }
 });
+
 route.get("/:id", async (req, res)=> {
     try {
-        let empinfo = await  getEmployee(req?.params?.id);
+        const empinfo = await  getEmployee(req?.params?.id);
+        console.log(empinfo);
         res.status(empinfo?.statusCode).json(empinfo);
     }catch (error) {
+        console.log(error);
         res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
     }
 });
 //get all employee
 route.get("/",authorizeUser, async (req, res)=> {
     try {
-        const { offset, limit, e } = req.query;
-
+        const { offset=0, limit=null, e } = req.query;
+       // console.log(offset, limit, e);
         const employeedetails = await getEmployee(offset, limit, e);
         console.log(employeedetails);
         res.status(employeedetails?.statusCode).json(employeedetails);

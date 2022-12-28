@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models/db");
 const permission = require("../models/permission");
 require("dotenv").config();
@@ -49,15 +50,18 @@ require("dotenv").config();
             }
     //
    // get permission
-   async function getPermission(id = null) {
+   async function getPermission(offset,limit,p,id=null) {
     try{
-        const approval = await db.permissions.findAll({where: id ? { id } : {} });
-        if (approval.length > 0){
+        const approval = await db.permissions.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
+            [Op.iLike]:`%${p}%`,
+          }}] }, offset, limit, });   
+        if (approval.count > 0){
      return {
         sucess:true,
         statusCode: 200,
-        message:"permission created sucessfully",
-        per:id ? approval[0] : approval,
+        message:" get permission sucessfully",
+        totalCount:approval?.count,
+        per : approval?.rows,
         };
     }else{
         return {

@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
+const { Address, permissions } = require("../models/db");
 const db = require("../models/db");
-//const permission = require("../models/permission");
 require("dotenv").config();
 const env = process?.env
 
@@ -33,14 +33,12 @@ async function addEmployee(empData){
         }
     }
    }
-    async function getEmployee(offset, limit, e, id = null) {
+    async function getEmployee(id=null,offset,limit,e) {
         try {
-          const getempdetails = await db.employee.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
-          [Op.iLike]:`%${e}%`,
-           }}, {state: {
-           [Op.iLike]: `%${e}%`
-        }}] },  offset, limit, });
-          console.log(getempdetails);
+        const getempdetails = await db.employee.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
+            [Op.iLike]:`%${e}%`,
+          }}] }, include:[{model:Address},{model:permissions}], 
+           offset, limit, });
           if(getempdetails.count > 0 ){
             return {
                sucess: true,
