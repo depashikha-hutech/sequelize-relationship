@@ -8,6 +8,7 @@ const employeeroute = require("./controller/employee");
 const permissionroute = require("./controller/permission");
 const meetingroute = require("./controller/metting");
 const mediaroute = require ("./controller/media");
+const addressroute = require ("./controller/address");
 require("dotenv").config();
 const cors = require("cors");
 const fileUpload = require('express-fileupload');
@@ -32,11 +33,12 @@ db.sequelize
 
 
 app.use("/api/v1/org", organizationroute)
-app.use("/org", loginroute)
+app.use("/api/v1/org", loginroute)
 app.use("/api/v1/employee",employeeroute)
 app.use("/api/v1/role",permissionroute)
 app.use("/api/v1/meet",meetingroute)
 app.use("/api/v1/media",mediaroute)
+app.use("/api/v1/address",addressroute)
 
 app.listen(6001, ()=> {
         console.log("server running at port 6001"); 

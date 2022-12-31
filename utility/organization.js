@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+const { permissions } = require("../models/db");
 const db = require("../models/db");
 require("dotenv").config();
 //const permission = require("../models/permission");
@@ -115,7 +116,7 @@ async function crtpermission(permissiondetails){
                 }
 
     
-    async function getAllOrgData(offset, limit, s, id = null) {
+    async function getAllOrgData(id = null,offset, limit, s,) {
         try {
           const getOrganisationDetails = await db.Organization.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
           [Op.iLike]:`%${s}%`,
@@ -123,8 +124,8 @@ async function crtpermission(permissiondetails){
            [Op.iLike]:`%${s}`,
           }}, {state:{
            [Op.iLike]: `%${s}`
-        }}] },  offset, limit, });
-          console.log(getOrganisationDetails);
+        }}] },include:[{model:permissions}],  offset, limit, });
+         // console.log(getOrganisationDetails);
           if(getOrganisationDetails.count > 0 ){
             return {
                sucess: true,
@@ -146,5 +147,28 @@ async function crtpermission(permissiondetails){
            console.log(error);
               return({ sucess:false, statusCode: 500, message:"organisation not found", error: error.message });
         }
-}          
-module.exports ={addorganization, crtEmp,  crtpermission,updateorg,getAllOrgData}
+}   
+
+async function deletedorg(id){
+    try{
+        const delorg =await db.Organization.destroy({ where: { id}});
+        if(delorg){
+            return {
+                sucess: true,
+                statusCode:200,
+                message:"deleted sucessfully",
+            };
+        } else{
+            return{
+            sucess: false,
+            statusCode:500,
+            message:"failed to delete the org",
+        }
+     };
+    } catch (error) {
+        return({ sucess:false, statusCode: 400, message:"org not found", error:error.message});
+    }
+    }
+    //
+
+module.exports ={addorganization, crtEmp,  crtpermission,updateorg,getAllOrgData,deletedorg}

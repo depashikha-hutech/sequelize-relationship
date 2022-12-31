@@ -1,4 +1,6 @@
+const { Op } = require("sequelize");
 const db = require("../models/db");
+const metting = require("../models/metting");
 require("dotenv").config();
 const env = process?.env
 
@@ -57,15 +59,23 @@ async function Createmeet(meeting){
         }
 
 // get permission
-async function getmeeting(id = null) {
+
+async function getmeeting(id=null,offset,limit,q,d) {
+    console.log({id,offset,limit,q,d});
     try{
-        const meeting = await db.Metting.findAll({where: id ? { id } : {} });
-        if (meeting.length > 0){
+       // if(d){
+
+      //  }
+        const meeting = await db.Metting.findAndCountAll({ where : id ? {id} :{[Op.or]:[{date:d},{title :{
+            [Op.iLike]:`%${q}%`,
+        }}] }, offset, limit, });   
+        if (meeting.count > 0){
      return {
         sucess:true,
         statusCode: 200,
         message:"meeting created sucessfully",
-        meet:id ? meeting[0] : meeting,
+        totalCount:meeting?.count,
+         meet: meeting?.rows,
         };
     }else{
         return {

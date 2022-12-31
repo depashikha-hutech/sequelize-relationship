@@ -82,8 +82,6 @@ route.post("/upload", async (req, res) => {
     // fetech media by id
     route.get("/download/:id", async (req, res) =>{
         try{
-            //let  file = await getMedia(req?.params?.id);
-            //file=file?.channel.get()
             const mediainfo = await getMedia(req?.params?.id);
             console.log(mediainfo);
   res.setHeader("Content-Length", mediainfo?.channel?.fileSize);
