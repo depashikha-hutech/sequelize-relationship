@@ -35,7 +35,10 @@ route.get("/:id",authorizeUser, async (req, res)=> {
 // get all meeting
 route.get("/",authorizeUser, async (req, res)=> {
     try {
-        const meetingdetails = await getmeeting();
+        const {id,offset=0,limit=null,q,d} =req.query
+        console.log("vvvvvvvv");
+        console.log(req.query);
+        const meetingdetails = await getmeeting(id,offset,limit,q,d);
         res.status(meetingdetails?.statusCode).json(meetingdetails);
     }catch (error) {
         console.log(error);

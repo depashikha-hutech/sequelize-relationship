@@ -22,7 +22,7 @@ db.sequelize
     console.error(
       `db connected to  ${ process?.env?.SERVERHOST || "NA" } database "${process?.env?.DBNAME || "NA"}"`
       )
-//   db.sequelize.sync({ force:true});
+  // db.sequelize.sync({ alter:true});
     })
   .catch((err) => {
     console.error(

@@ -47,11 +47,15 @@ db.permissions.hasMany(db.employee,
   db.employee.belongsTo(db.permissions)
   db.Organization.hasMany(db.permissions,{
     foreignKey:'orgId',
-    targetkey:'id'
+    targetkey:'id',
+    onDelete: 'CASCADE' 
+
   });
   db.employee.hasMany(db.Address,{
      foreignKey:'empId',
-     targetkey:'id'
+     targetkey:'id',
+    onDelete: 'CASCADE' 
+
   });
   db.Organization.hasMany(db.Metting,{
     foreignKey:'orgId',
@@ -60,6 +64,8 @@ db.permissions.hasMany(db.employee,
   db.employee.hasMany(db.Metting,{
     foreignKey:'hostId',
     targetkey:'id'
+    //onDelete: 'CASCADE' 
+
   });
 
 

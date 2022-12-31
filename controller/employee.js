@@ -9,7 +9,6 @@ route.post("/", authorizeUser, async(req, res) => {
         const{empData,addressData}=req.body;
         if(empData && addressData){
         const crtemployee = await addEmployee({...empData, orgId:req?.user?.orgId});
-        console.log({crtemployee});
         if (crtemployee?.sucess){
             const addresscrt = await addaddress({...addressData,empId:crtemployee?.emp?.id} );
             if(addresscrt?.sucess){
