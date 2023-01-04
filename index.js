@@ -9,9 +9,13 @@ const permissionroute = require("./controller/permission");
 const meetingroute = require("./controller/metting");
 const mediaroute = require ("./controller/media");
 const addressroute = require ("./controller/address");
+const mailroute = require("./controller/mail");
 require("dotenv").config();
 const cors = require("cors");
 const fileUpload = require('express-fileupload');
+const nodemailer = require("nodemailer");
+
+
 const port = process?.env?.port || 6001;
 app.use(fileUpload());
 app.use(bodyParser.json());
@@ -39,6 +43,7 @@ app.use("/api/v1/role",permissionroute)
 app.use("/api/v1/meet",meetingroute)
 app.use("/api/v1/media",mediaroute)
 app.use("/api/v1/address",addressroute)
+app.use("/api/v1/mail",mailroute)
 
 app.listen(6001, ()=> {
         console.log("server running at port 6001"); 

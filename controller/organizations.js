@@ -50,7 +50,8 @@ route.put("/:id", async (req, res) => {
 // get all
 route.get("/", async (req, res)=> {
   try {
-    const { offset, limit, s } = req.query;
+    const { offset=0, limit=null, s } = req.query;
+    //console.log(offset=0, limit=null, s);
       const orgDetails = await  getAllOrgData( offset, limit, s);
       console.log({orgDetails});
       res.status(orgDetails?.statusCode).json(orgDetails);
@@ -63,7 +64,8 @@ route.get("/", async (req, res)=> {
 // get  by id
 route.get("/:id", async (req, res)=> {
   try {
-      const orgDetails = await  getAllOrgData(req?.params?.id);
+    const { offset=0, limit=null, s=null } = req.query;
+      const orgDetails = await  getAllOrgData( offset,limit,s,req?.params?.id);
       console.log(orgDetails);
       res.status(orgDetails?.statusCode).json(orgDetails);
   }catch (error) {

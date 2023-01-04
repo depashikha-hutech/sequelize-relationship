@@ -64,7 +64,6 @@ db.permissions.hasMany(db.employee,
   db.employee.hasMany(db.Metting,{
     foreignKey:'hostId',
     targetkey:'id'
-    //onDelete: 'CASCADE' 
 
   });
 

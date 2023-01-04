@@ -116,7 +116,8 @@ async function crtpermission(permissiondetails){
                 }
 
     
-    async function getAllOrgData(id = null,offset, limit, s,) {
+    async function getAllOrgData(offset, limit, s,id=null) {
+        console.log(offset, limit, s,);
         try {
           const getOrganisationDetails = await db.Organization.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
           [Op.iLike]:`%${s}%`,

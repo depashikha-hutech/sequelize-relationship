@@ -60,35 +60,50 @@ async function Createmeet(meeting){
 
 // get permission
 
-async function getmeeting(id=null,offset,limit,q,d) {
-    console.log({id,offset,limit,q,d});
-    try{
-       // if(d){
-
-      //  }
-        const meeting = await db.Metting.findAndCountAll({ where : id ? {id} :{[Op.or]:[{date:d},{title :{
-            [Op.iLike]:`%${q}%`,
-        }}] }, offset, limit, });   
-        if (meeting.count > 0){
-     return {
+async function getmeeting(q, dateStr,id) {
+    console.log(q, dateStr,id);
+  try {
+    let andConditions = [];
+    if (!q && !dateStr) { andConditions = {};
+} else {
+      const today = new Date()?.toISOString()?.split("T")[0];
+      console.log(today);
+      const tomorrow = new Date(new Date()?.setDate(new Date().getDate() + 1))
+        ?.toISOString()
+        ?.split("T")[0];
+      if (q) {
+        andConditions.push({ title: { [Op.iLike]: `%${q}%` } });
+      }
+      if (dateStr === "today") {
+        andConditions.push({ date: { [Op.eq]: today } });
+      } else if (dateStr === "tomorrow") {
+        andConditions.push({ date: { [Op.eq]: tomorrow } });
+     // } else if (dateStr === "week") {
+        //
+     // } else if (dateStr === "month") {
+        
+      } else if (dateStr) {
+        const [startDate, endDate] = dateStr?.split(":");
+        andConditions.push({
+          date: { [Op.and]: [{ [Op.gte]: startDate }, { [Op.lte]: endDate }] },
+        });
+      }
+    }
+    const meet = await db.Metting.findAndCountAll({
+      where:  id ? {id} : andConditions,
+    });
+    return {
         sucess:true,
         statusCode: 200,
         message:"meeting created sucessfully",
-        totalCount:meeting?.count,
-         meet: meeting?.rows,
-        };
-    }else{
-        return {
-            sucess: true,
-            statusCode:500,
-            message:"meeting not created",
-        }
-    };
-   } catch (error) {
-    console.log(error);
-       return({ sucess:false, statusCode: 400, message:"meeting not found", error: error.message });
-    }
-    }
+        totalCount:meet?.count,
+         meeting: meet?.rows,
+        };      
+    } catch (error) {
+     console.log(error);
+        return({ sucess:false, statusCode: 400, message:"meeting not found", error: error.message });
+     }
+     }
     //
     //delete permission
     async function deletemeeting(id){

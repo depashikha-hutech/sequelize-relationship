@@ -79,6 +79,7 @@
     "moment-timezone": "^0.5.39",
     "ms": "^2.0.0",
     "negotiator": "^0.6.3",
+    "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
     "nopt": "^1.0.10",
     "normalize-path": "^3.0.0",

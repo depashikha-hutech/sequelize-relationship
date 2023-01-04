@@ -26,7 +26,9 @@ route.put("/:id", authorizeUser, async (req, res) => {
 //get meeting by id
 route.get("/:id",authorizeUser, async (req, res)=> {
     try {
-        const meetingdetails = await  getmeeting(req?.params?.id);
+        const {q=null,dateStr=null} =req.query
+        const meetingdetails = await  getmeeting(q,dateStr,req?.params?.id,);
+        console.log(meetingdetails);
         res.status(meetingdetails?.statusCode).json(meetingdetails);
     }catch (error) {
         res.status(500).json({ sucess: false, message: "internal server error", error: error.message});
@@ -35,10 +37,10 @@ route.get("/:id",authorizeUser, async (req, res)=> {
 // get all meeting
 route.get("/",authorizeUser, async (req, res)=> {
     try {
-        const {id,offset=0,limit=null,q,d} =req.query
-        console.log("vvvvvvvv");
-        console.log(req.query);
-        const meetingdetails = await getmeeting(id,offset,limit,q,d);
+        const {q,dateStr} =req.query
+        console.log(q,dateStr);
+        const meetingdetails = await getmeeting(q,dateStr);
+        console.log({meetingdetails});
         res.status(meetingdetails?.statusCode).json(meetingdetails);
     }catch (error) {
         console.log(error);
