@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+const { employee } = require("../models/db");
 const db = require("../models/db");
 const permission = require("../models/permission");
 require("dotenv").config();
@@ -54,7 +55,8 @@ require("dotenv").config();
     try{
         const approval = await db.permissions.findAndCountAll({ where : id ? {id} :{[Op.or]:[{name :{
             [Op.iLike]:`%${p}%`,
-          }}] }, offset, limit, });   
+          }}] },include:[{model:employee}],
+           offset, limit, });   
         if (approval.count > 0){
      return {
         sucess:true,
